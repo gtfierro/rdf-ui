@@ -21,6 +21,7 @@
                 <input id="url-input" type="text" value="bldg.ttl">
                 <button @click="handleURL($event.target.value)">Submit</button>
             </p>
+            <statusbox :message="message" :error="error" :progress="progress"></statusbox>
             <querybox element="querybox"></querybox>
         </div>
         <div class="col2">

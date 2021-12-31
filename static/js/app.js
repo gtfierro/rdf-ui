@@ -13,19 +13,27 @@ const app = Vue.createApp({
     return {
       store: null,
       inspect_url: {url: ''},
+      message: '',
+      progress: '',
+      error: '',
     }
   },
   created: function() {
     var self = this;
+    this.update_status({progress: "Loading store..."});
     init()
         .then(() => self.store = new MemoryStore())
-        .then(() => fetch("Brick.ttl"))
+        .then(() => {
+            self.update_status({progress: "Fetching Brick"});
+            return fetch("Brick.ttl");
+        })
         .then(resp => resp.text())
         .then(t => {
             self.store.load(t, "text/turtle");
         })
         .then(() => {
             console.log("Loaded Brick");
+            self.update_status({message: "Loaded Brick"});
         });
   },
   mounted: function() {
@@ -42,6 +50,24 @@ const app = Vue.createApp({
     };
   },
   methods: {
+    update_status: function(msg) {
+      if (msg.progress) {
+        this.progress = msg.progress;
+      } else {
+        this.progress = '';
+      }
+      if (msg.message) {
+          this.message = msg.message;
+      } else {
+          this.message = '';
+      }
+
+      if (msg.error) {
+          this.error = msg.error;
+      } else {
+          this.error = '';
+      }
+    },
     getURIValue: function (uri) {
         const parts = uri.split(/[\/#]/);
         return parts[parts.length-1];
@@ -49,19 +75,27 @@ const app = Vue.createApp({
     handleFile: function() {
         var self = this;
         const files = document.getElementById('file-input').files;
+        this.update_status({progress: "Uploading file"});
         for (const file of files) {
             file.text()
                 .then((t) => self.store.load(t, "text/turtle"))
-                .then(() => console.log("finished loading file"));
+                .then(() => {
+                    console.log("finished loading file");
+                    this.update_status({message: "Loaded file"});
+                });
         }
     },
     handleURL: function() {
         var self = this;
         console.log("fetching");
+        this.update_status({progress: "Fetching file from URL"});
         fetch(document.getElementById("url-input").value)
             .then((resp) => resp.text())
             .then((t) => self.store.load(t, "text/turtle"))
-            .then(() => console.log("finished loading file"));
+            .then(() => {
+                console.log("finished loading file");
+                this.update_status({message: "Loaded file from URL"});
+            });
     }
   }
 })
@@ -253,6 +287,29 @@ app.component("iri-link", {
             <a v-if="is_iri" class="iri" :href="iri">{{ iri }}</a>
             <p v-else>{{ iri }}</p>
         </span>
+    `,
+});
+
+app.component("statusbox", {
+    props: {
+        message: String,
+        progress: String,
+        error: String,
+    },
+    updated: function() {
+        const self = this;
+        if (this.message.length > 0) {
+            setTimeout(() => {
+                self.$root.message = "";
+            }, 2000);
+        }
+    },
+    template: `
+        <div>
+            <p class="message msg" v-if="message.length > 0">{{ message }}</p>
+            <p class="progress msg" v-if="progress.length > 0">{{ progress }}</p>
+            <p class="error msg" v-if="error.length > 0">{{ error }}</p>
+        </div>
     `,
 });
 

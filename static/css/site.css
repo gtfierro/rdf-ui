@@ -24,3 +24,19 @@ body {
     grid-gap: 10px;
     grid-template-columns: 50% 100%;
 }
+
+.msg {
+    padding: 10px;
+}
+
+.error {
+    background-color: #FD4659;
+}
+
+.progress {
+    background-color: #FFC513;
+}
+
+.message {
+    background-color: #47C072;
+}
