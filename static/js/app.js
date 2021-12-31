@@ -212,14 +212,10 @@ app.component("querybox", {
 
     },
     computed: {
-        resultbox: function() {
-            return this.element + "-result";
-        },
     },
     template: `
         <div>
             <div class="querybox" v-bind:id="element"></div>
-            <div v-bind:id="resultbox"></div>
         </div>
     `,
 });

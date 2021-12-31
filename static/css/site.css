@@ -15,7 +15,6 @@ body {
     grid-column: 1 / 2;
 }
 .col2 {
-    padding-top: 30px;
     max-width: 50%;
     grid-column: 2 / 2;
 }
