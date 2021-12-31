@@ -1,0 +1,26 @@
+body {
+  font-family: Menlo, Consolas, monospace;
+  color: #444;
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 500px;
+  text-align: center;
+}
+
+.col1 {
+    grid-column: 1 / 2;
+}
+.col2 {
+    padding-top: 30px;
+    max-width: 50%;
+    grid-column: 2 / 2;
+}
+.wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 50% 100%;
+}

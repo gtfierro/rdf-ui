@@ -1,0 +1,21 @@
+{
+  "name": "oxigraph_js",
+  "collaborators": [
+    "Tpt <thomas@pellissier-tanon.fr>"
+  ],
+  "description": "JavaScript bindings of Oxigraph",
+  "version": "0.2.5",
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oxigraph/oxigraph/tree/master/js"
+  },
+  "files": [
+    "oxigraph_bg.wasm",
+    "oxigraph.js",
+    "oxigraph.d.ts"
+  ],
+  "module": "oxigraph.js",
+  "types": "oxigraph.d.ts",
+  "sideEffects": false
+}

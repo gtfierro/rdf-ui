@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href=".">
+    <meta charset="utf-8">
+    <title>SPARQL</title>
+    <link rel="stylesheet" href="static/css/site.css">
+    <link href="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.js"></script>
+  </head>
+  <body>
+	<div id="app" class="wrapper">
+        <div class="col1">
+            <p>
+                <label for="file-input">File Upload (.ttl): </label>
+                <input id="file-input" type="file">
+                <button @click="handleFile()">Submit</button>
+            </p>
+            <p>
+                <label for="url-input">URL Fetch (.ttl): </label>
+                <input id="url-input" type="text" value="bldg.ttl">
+                <button @click="handleURL($event.target.value)">Submit</button>
+            </p>
+            <querybox element="querybox"></querybox>
+        </div>
+        <div class="col2">
+            <instance-info :url="inspect_url.url"></instance-info>
+        </div>
+    </div>
+    <div class="footer">
+        <br />
+        <br />
+        <hr />
+        <p>Built by <a href="https://home.gtf.fyi">Gabe Fierro</a> || Source at <a href="https://github.com/gtfierro/brick-tree-viewer">GitHub</a></p>
+    </div>
+  </body>
+  <script src="static/js/vue.global.prod.js"></script>
+  <script type="module" src="static/js/app.js"></script>
+</html>
