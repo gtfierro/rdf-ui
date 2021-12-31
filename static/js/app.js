@@ -39,8 +39,7 @@ const app = Vue.createApp({
   mounted: function() {
     const self = this;
     document.onclick = function (e) {
-      const elem = e.target || e.srcElement;
-        console.log(app);
+      const elem = e.target;
       if (elem.tagName == 'A' && elem.classList.contains("iri")) {
         elem.removeAttribute("target");
         self.inspect_url.url = e.target.textContent;
@@ -110,22 +109,9 @@ app.component("querybox", {
     },
     methods: {
         updateQueryString: function() {
-            let queryParams = new URLSearchParams(window.location.search);
+            const queryParams = new URLSearchParams(window.location.search);
             queryParams.set("query", this.yasqe.getValue());
             history.replaceState(null, null, "?"+queryParams.toString());
-        },
-        addEventListeners: function() {
-            const elements = document.getElementsByClassName("iri");
-            const root = this.$root;
-            for (const elem of elements) {
-                console.log("add to element", elem);
-                elem.removeAttribute("target");
-                elem.addEventListener("click", (e) => {
-                    root.inspect_url.url = e.target.textContent;
-                    console.log("clicked", e.target.textContent);
-                    e.preventDefault();
-                });
-            }
         },
     },
     mounted: function() {
@@ -156,24 +142,24 @@ app.component("querybox", {
             defaultPlugin: "table",
             persistencyExpire: 0,
         });
-        this.yasqe.on("query", (inst, req) => {
-            let q = req._data.query;
-            let resp = {
+        this.yasqe.on("query", (_, req) => {
+            const q = req._data.query;
+            const resp = {
                 "head": {"vars": []},
                 "results": {
                     "bindings": [],
                 },
             };
-            let keys = [];
-            for (let binding of this.$root.store.query(q)) {
+            const keys = [];
+            for (const binding of this.$root.store.query(q)) {
                 if (keys.length == 0) {
-                    for (let key of binding.keys()) {
+                    for (const key of binding.keys()) {
                         resp.head.vars.push(key);
                         keys.push(key);
                     }
                 }
-                let b = {};
-                for (let key of resp.head.vars) {
+                const b = {};
+                for (const key of resp.head.vars) {
                     b[key] = {"value": binding.get(key).value,
                                 "type": typelookup[binding.get(key).termType]};
                 }
@@ -188,7 +174,6 @@ app.component("querybox", {
         });
         this.yasr.on("drawn", (inst, plug) => {
             console.log("drawn", inst, plug);
-            //this.addEventListeners();
         });
 
     },
