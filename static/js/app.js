@@ -1,12 +1,10 @@
 import init, {MemoryStore} from "./pkg/oxigraph.js";
-//import Tree from "./tree.js";
 
 const typelookup = {
     "NamedNode": "uri",
     "BlankNode": "bnode",
     "Literal": "literal",
 }
-
 
 const app = Vue.createApp({
   data: function() {
@@ -16,25 +14,11 @@ const app = Vue.createApp({
       message: '',
       progress: '',
       error: '',
+      files: [],
     }
   },
   created: function() {
-    var self = this;
-    this.update_status({progress: "Loading store..."});
-    init()
-        .then(() => self.store = new MemoryStore())
-        .then(() => {
-            self.update_status({progress: "Fetching Brick"});
-            return fetch("Brick.ttl");
-        })
-        .then(resp => resp.text())
-        .then(t => {
-            self.store.load(t, "text/turtle");
-        })
-        .then(() => {
-            console.log("Loaded Brick");
-            self.update_status({message: "Loaded Brick"});
-        });
+      this.initStore();
   },
   mounted: function() {
     const self = this;
@@ -49,6 +33,20 @@ const app = Vue.createApp({
     };
   },
   methods: {
+    initStore: function() {
+        var self = this;
+        this.update_status({progress: "Loading store..."});
+        init()
+            .then(() => self.store = new MemoryStore())
+            .then(() => {
+                self.update_status({message: "Ready!"})
+                const queryParams = new URLSearchParams(window.location.search);
+                for (const url of queryParams.getAll('url')) {
+                    console.log("adding uri: " + url);
+                    self.$root.handleURL(url, false);
+                }
+            });
+    },
     update_status: function(msg) {
       if (msg.progress) {
         this.progress = msg.progress;
@@ -71,6 +69,20 @@ const app = Vue.createApp({
         const parts = uri.split(/[\/#]/);
         return parts[parts.length-1];
     },
+    removeFile: function(file) {
+        const index = this.files.indexOf(file);
+        if (index > -1) {
+            this.files.splice(index, 1);
+            console.log(this.files);
+        }
+        const queryParams = new URLSearchParams(window.location.search);
+        queryParams.delete("url");
+        for (const url of this.files) {
+            queryParams.set("url", url);
+        }
+        history.replaceState(null, null, "?"+queryParams.toString());
+        this.initStore();
+    },
     handleFile: function() {
         var self = this;
         const files = document.getElementById('file-input').files;
@@ -81,19 +93,41 @@ const app = Vue.createApp({
                 .then(() => {
                     console.log("finished loading file");
                     this.update_status({message: "Loaded file"});
+                    if (this.files.indexOf(file.name) == -1) {
+                        this.files.push(file.name);
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    this.update_status({error: "Error loading " + url + " (" + err + ")"});
                 });
         }
     },
-    handleURL: function() {
+    handleURL: function(inp_url, append) {
         var self = this;
+        const url = inp_url ? inp_url : document.getElementById("url-input").value
+        // do_append defaults to false when undefined
+        const do_append = append === undefined ? true : append;
         console.log("fetching");
-        this.update_status({progress: "Fetching file from URL"});
-        fetch(document.getElementById("url-input").value)
+        this.update_status({progress: "Fetching file " + url + " from URL"});
+        fetch(url)
             .then((resp) => resp.text())
             .then((t) => self.store.load(t, "text/turtle"))
             .then(() => {
                 console.log("finished loading file");
-                this.update_status({message: "Loaded file from URL"});
+                this.update_status({message: "Loaded " + url});
+                if (this.files.indexOf(url) == -1) {
+                    this.files.push(url);
+                }
+                if (do_append) {
+                    const queryParams = new URLSearchParams(window.location.search);
+                    queryParams.append("url", url);
+                    history.replaceState(null, null, "?"+queryParams.toString());
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                this.update_status({error: "Error loading " + url + " (" + err + ")"});
             });
     }
   }
@@ -110,32 +144,32 @@ app.component("querybox", {
     methods: {
         updateQueryString: function() {
             const queryParams = new URLSearchParams(window.location.search);
-            queryParams.set("query", this.yasqe.getValue());
+            queryParams.append("query", this.yasqe.getValue());
             history.replaceState(null, null, "?"+queryParams.toString());
         },
     },
     mounted: function() {
         var self = this;
-        //this.yasgui = new Yasgui(document.getElementById(this.element), {
-        //});
-        //this.yasqe = this.yasgui.getTab().yasqe;
         this.yasqe = new Yasqe(document.getElementById(this.element), {});
-        let queryParams = new URLSearchParams(window.location.search);
+
+        const queryParams = new URLSearchParams(window.location.search);
         if (queryParams.has("query")) {
             console.log(queryParams.get("query"));
             //this.yasqe.setValue(queryParams.get("query"));
         } else {
-            this.yasqe.addPrefixes({
-                "brick": "https://brickschema.org/schema/Brick#",
-                "owl": "http://www.w3.org/2002/07/owl#",
-                "sh": "http://www.w3.org/ns/shacl#",
-                "qudt": "http://qudt.org/schema/qudt/",
-                "quantitykind": "http://qudt.org/vocab/quantitykind/",
-                "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-                "unit": "http://qudt.org/vocab/unit/",
-            });
+            this.yasqe.setValue("SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 20");
         }
+
+        this.yasqe.addPrefixes({
+            "brick": "https://brickschema.org/schema/Brick#",
+            "owl": "http://www.w3.org/2002/07/owl#",
+            "sh": "http://www.w3.org/ns/shacl#",
+            "qudt": "http://qudt.org/schema/qudt/",
+            "quantitykind": "http://qudt.org/vocab/quantitykind/",
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            "unit": "http://qudt.org/vocab/unit/",
+        });
 
         this.yasr = new Yasr(document.getElementById(this.element + "-result"), {
             pluginOrder: ["table", "response"],
@@ -238,6 +272,7 @@ app.component("instance-info", {
     },
     template: `
         <div>
+        <h3>Instance Info</h3>
         <i>{{ url }}</i>
         <ul>
             <li v-for="(vals, prop) in details[0]"><b>{{ this.$root.getURIValue(prop) }}:</b>
@@ -283,9 +318,11 @@ app.component("statusbox", {
     },
     updated: function() {
         const self = this;
-        if (this.message.length > 0) {
+        if (this.message.length > 0 || this.error.length > 0 || this.progress.length > 0) {
             setTimeout(() => {
                 self.$root.message = "";
+                self.$root.error = "";
+                self.$root.progress = "";
             }, 2000);
         }
     },
@@ -294,6 +331,23 @@ app.component("statusbox", {
             <p class="message msg" v-if="message.length > 0">{{ message }}</p>
             <p class="progress msg" v-if="progress.length > 0">{{ progress }}</p>
             <p class="error msg" v-if="error.length > 0">{{ error }}</p>
+        </div>
+    `,
+});
+
+app.component("file-list", {
+    props: {
+        files: Array,
+    },
+    template: `
+        <div>
+            <h3>Loaded {{ files.length }} Files</h3>
+            <ul class="no-bullets">
+                <li v-for="file in files">
+                    <button class="close-button" v-on:click="$root.removeFile(file)">&times; </button>
+                    <a :href="file">{{ file }}</a>
+                </li>
+            </ul>
         </div>
     `,
 });

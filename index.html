@@ -9,23 +9,35 @@
     <script src="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.js"></script>
   </head>
   <body>
-	<div id="app" class="wrapper">
-        <div class="col1">
-            <p>
-                <label for="file-input">File Upload (.ttl): </label>
-                <input id="file-input" type="file">
-                <button @click="handleFile()">Submit</button>
-            </p>
-            <p>
-                <label for="url-input">URL Fetch (.ttl): </label>
-                <input id="url-input" type="text" value="bldg.ttl">
-                <button @click="handleURL($event.target.value)">Submit</button>
-            </p>
-            <statusbox :message="message" :error="error" :progress="progress"></statusbox>
-            <querybox element="querybox"></querybox>
+	<div id="app">
+        <div class="wrapper">
+            <div class="col1">
+                <p>
+                    <label for="file-input">File Upload (.ttl): </label>
+                    <input id="file-input" type="file">
+                    <button @click="handleFile()">Submit</button>
+                </p>
+                <p>
+                    <label for="url-input">URL Fetch (.ttl): </label>
+                    <input id="url-input" type="text" value="bldg.ttl">
+                    <button @click="handleURL()">Submit</button>
+                </p>
+                <p>
+                    <button @click="handleURL('Brick.ttl', true)">Load Brick</button>
+                </p>
+            </div>
+            <div class="col2">
+                <file-list :files="files"></file-list>
+            </div>
         </div>
-        <div class="col2">
-            <instance-info :url="inspect_url.url"></instance-info>
+        <div class="wrapper">
+            <div class="col1">
+                <statusbox :message="message" :error="error" :progress="progress"></statusbox>
+                <querybox element="querybox"></querybox>
+            </div>
+            <div class="col2">
+                <instance-info :url="inspect_url.url"></instance-info>
+            </div>
         </div>
     </div>
     <div class="footer">

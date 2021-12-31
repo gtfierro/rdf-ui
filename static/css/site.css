@@ -40,3 +40,15 @@ body {
 .message {
     background-color: #47C072;
 }
+
+ul.no-bullets {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+}
+
+.close-button {
+  border: none;
+  text-align: center;
+  margin: 10px;
+}
