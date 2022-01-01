@@ -137,29 +137,27 @@ app.component("querybox", {
     props: { element: Object },
     data: function() {
         return {
-            yasgui: null,
             yasqe: null,
         }
     },
     methods: {
         updateQueryString: function() {
+            console.log("Saving query: " + this.yasqe.getValue());
             const queryParams = new URLSearchParams(window.location.search);
-            queryParams.append("query", this.yasqe.getValue());
+            queryParams.set("query", this.yasqe.getValue());
             history.replaceState(null, null, "?"+queryParams.toString());
         },
     },
     mounted: function() {
         var self = this;
-        this.yasqe = new Yasqe(document.getElementById(this.element), {});
-
         const queryParams = new URLSearchParams(window.location.search);
         if (queryParams.has("query")) {
-            console.log(queryParams.get("query"));
-            //this.yasqe.setValue(queryParams.get("query"));
-        } else {
-            this.yasqe.setValue("SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 20");
+            document.getElementById(this.element).value = queryParams.get("query");
         }
 
+        this.yasqe = new Yasqe(document.getElementById(this.element), {
+            persistent: null,
+        });
         this.yasqe.addPrefixes({
             "brick": "https://brickschema.org/schema/Brick#",
             "owl": "http://www.w3.org/2002/07/owl#",
@@ -206,12 +204,6 @@ app.component("querybox", {
             console.log(self.yasr);
             this.updateQueryString();
         });
-        this.yasr.on("drawn", (inst, plug) => {
-            console.log("drawn", inst, plug);
-        });
-
-    },
-    computed: {
     },
     template: `
         <div>
