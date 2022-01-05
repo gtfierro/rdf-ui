@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.js"></script>
   </head>
   <body>
+	<h3><a href="#">WebSPARQL</a></h3>
 	<div id="app">
         <div class="wrapper">
             <div class="col1">
@@ -19,12 +20,20 @@
                 </p>
                 <p>
                     <label for="url-input">URL Fetch (.ttl): </label>
-                    <input id="url-input" type="text" value="bldg.ttl">
+                    <input id="url-input" type="text" value="">
                     <button @click="handleURL()">Submit</button>
                 </p>
                 <p>
-                    <button @click="handleURL('Brick.ttl', true)">Load Brick</button>
+		    Brick Files:
+                    <button @click="handleURL('ttl/Brick.ttl', true)">Load Brick v1.2</button>
+                    <button @click="handleURL('ttl/Brick1.3rc1.ttl', true)">Load Brick v1.3rc1</button>
+                    <button @click="handleURL('ttl/bldg.ttl', true)">Load example building</button>
                 </p>
+		<p>
+		    223P Files:
+                    <button @click="handleURL('ttl/223p/g36-figure-a-2-compiled.ttl', true)">Load G36 Figure A2</button>
+                    <button @click="handleURL('ttl/223p/223pstandard.ttl', true)">Load 223P Standard (draft)</button>
+		</p>
             </div>
             <div class="col2">
                 <file-list :files="files"></file-list>
