@@ -158,16 +158,18 @@ app.component("querybox", {
         this.yasqe = new Yasqe(document.getElementById(this.element), {
             persistent: null,
         });
-        this.yasqe.addPrefixes({
-            "brick": "https://brickschema.org/schema/Brick#",
-            "owl": "http://www.w3.org/2002/07/owl#",
-            "sh": "http://www.w3.org/ns/shacl#",
-            "qudt": "http://qudt.org/schema/qudt/",
-            "quantitykind": "http://qudt.org/vocab/quantitykind/",
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-            "unit": "http://qudt.org/vocab/unit/",
-        });
+	this.yasqe.addPrefixes({
+	    "owl": "http://www.w3.org/2002/07/owl#",
+	    "sh": "http://www.w3.org/ns/shacl#",
+	    "qudt": "http://qudt.org/schema/qudt/",
+	    "quantitykind": "http://qudt.org/vocab/quantitykind/",
+	    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+	    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+	    "unit": "http://qudt.org/vocab/unit/",
+	    "s223": "http://data.ashrae.org/standard223#",
+	    "g36": "http://data.ashrae.org/standard223/1.0/extension/g36#",
+	    "brick": "https://brickschema.org/schema/Brick#",
+	});
 
         this.yasr = new Yasr(document.getElementById(this.element + "-result"), {
             pluginOrder: ["table", "response"],
