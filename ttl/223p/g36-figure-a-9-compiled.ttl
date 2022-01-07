@@ -1,0 +1,595 @@
+@prefix ex: <http://ex/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+s223:hasPosition a owl:ObjectProperty ;
+    rdfs:label "has position" .
+
+ex:00001 a s223:System,
+        ex:AHU ;
+    rdfs:label "A-9" ;
+    s223:contains ex:ReturnSystem,
+        ex:SupplySystem ;
+    s223:hasSubSystem ex:ReturnSystem,
+        ex:SupplySystem ;
+    ex:exhaustAirOutlet ex:00005 ;
+    ex:outsideAirInlet ex:00002 ;
+    ex:returnAirInlet ex:00004 ;
+    ex:supplyAirOutlet ex:00003 .
+
+ex:Junction_1 a s223:Junction ;
+    rdfs:label "Junction 1" .
+
+ex:TempSensor_1 a s223:TemperatureSensor ;
+    rdfs:label "Temp sensor 1" ;
+    s223:hasMeasurementLocation ex:00050 .
+
+ex:TempSensor_2 a s223:TemperatureSensor ;
+    rdfs:label "Temp sensor 2" ;
+    s223:hasMeasurementLocation ex:00046 .
+
+ex:exaasen a s223:Sensor ;
+    rdfs:label "Exhaust Air Sensor" ;
+    s223:hasMeasurementLocation ex:00060 ;
+    s223:observesProperty ex:exatmp .
+
+ex:masen a s223:Sensor ;
+    rdfs:label "Mixed Air Sensor" ;
+    s223:hasMeasurementLocation ex:00023 ;
+    s223:observesProperty ex:mxtmp .
+
+ex:oasen a s223:Sensor ;
+    rdfs:label "Outside Air Sensor" ;
+    s223:hasMeasurementLocation ex:00006 ;
+    s223:observesProperty ex:oatmp .
+
+ex:rasen a s223:Sensor ;
+    rdfs:label "Return Air Sensor" ;
+    s223:hasMeasurementLocation ex:00054 ;
+    s223:observesProperty ex:ratmp .
+
+ex:sasen a s223:Sensor ;
+    rdfs:label "Supply Air Sensor" ;
+    s223:hasMeasurementLocation ex:00070 ;
+    s223:observesProperty ex:satmp .
+
+<http://sandbox/psfigure009> a owl:Ontology ;
+    rdfs:label "figure009" ;
+    rdfs:isDefinedBy <http://sandbox/psfigure009> ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all> .
+
+ex:00002 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.outsideAirInlet" ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00003 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.supplyAirOutlet" ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00004 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.returnAirInlet" ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00005 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.exhaustAirOutlet" ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00070 a s223:Duct ;
+    rdfs:label "Supply Air Duct" ;
+    s223:cnx ex:00049 ;
+    s223:hasProperty ex:satmp .
+
+ex:coil_inlet_temp a s223:QuantifiableProperty ;
+    rdfs:label "coil inlet temp" ;
+    s223:hasUnit <http://qudt.org/vocab/unit/DEG_F> ;
+    s223:hasValue ex:coil_inlet_temp_value .
+
+ex:coil_inlet_temp_value a s223:Value ;
+    rdfs:label "coil inlet temp value" ;
+    s223:hasSimpleValue "79" .
+
+ex:coil_outlet_temp a s223:QuantifiableProperty ;
+    rdfs:label "coil outlet temp" ;
+    s223:hasUnit <http://qudt.org/vocab/unit/DEG_F> ;
+    s223:hasValue ex:coil_outlet_temp_value .
+
+ex:coil_outlet_temp_value a s223:Value ;
+    rdfs:label "coil outlet temp value" ;
+    s223:hasSimpleValue "80" .
+
+ex:extvalue a s223:Value ;
+    rdfs:label "Exhaust Air Temperature Value" ;
+    s223:hasSimpleValue "80.3" .
+
+ex:00008 a s223:AnalogOut,
+        s223:Property ;
+    s223:isPropertyOf ex:00007 .
+
+ex:00012 a s223:AnalogIn,
+        s223:Property ;
+    s223:isPropertyOf ex:00011 .
+
+ex:00015 a s223:Duct ;
+    s223:cnx ex:00010,
+        ex:00013 .
+
+ex:00017 a s223:AnalogOut,
+        s223:Property ;
+    s223:isPropertyOf ex:00016 .
+
+ex:00022 a s223:AnalogOut,
+        s223:Property ;
+    s223:isPropertyOf ex:00021 .
+
+ex:00029 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.hot_water_coil.hotWaterOutlet" ;
+    s223:cnx ex:00025 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:HotWater .
+
+ex:00031 a s223:AnalogIn,
+        s223:Property ;
+    s223:isPropertyOf ex:00030 .
+
+ex:00032 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.hot_water_coil.hw_valve.hotWaterInlet" ;
+    s223:cnx ex:00030 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:HotWater .
+
+ex:00034 a s223:HotWaterConnection ;
+    s223:cnx ex:00028,
+        ex:00033 .
+
+ex:00035 a s223:Duct ;
+    s223:cnx ex:00024,
+        ex:00026 .
+
+ex:00040 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.chilled_water_coil.chilledWaterReturn" ;
+    s223:cnx ex:00036 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:ChilledWater .
+
+ex:00042 a s223:AnalogIn,
+        s223:Property ;
+    s223:hasValue ex:ChilledWaterValveValue ;
+    s223:isPropertyOf ex:00041 .
+
+ex:00043 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.chilled_water_coil.chilled_water_valve.chilledWaterInlet" ;
+    s223:cnx ex:00041 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:ChilledWater .
+
+ex:00045 a s223:ChilledWaterConnection,
+        s223:Connection ;
+    s223:cnx ex:00039,
+        ex:00044 ;
+    s223:connectsAt ex:00039,
+        ex:00044 .
+
+ex:00054 a s223:Duct ;
+    s223:cnx ex:00052 ;
+    s223:hasProperty ex:ratmp .
+
+ex:00055 a s223:Duct ;
+    rdfs:label "A-9.return_air" ;
+    s223:cnx ex:00053,
+        ex:00058,
+        ex:00063 .
+
+ex:00057 a s223:AnalogOut,
+        s223:Property ;
+    s223:isPropertyOf ex:00056 .
+
+ex:00060 a s223:Duct ;
+    s223:cnx ex:00059 ;
+    s223:hasProperty ex:exatmp .
+
+ex:00062 a s223:AnalogOut,
+        s223:Property ;
+    s223:isPropertyOf ex:00061 .
+
+ex:ChilledWaterValveValue a s223:Value ;
+    rdfs:label "Chilled water valve value" ;
+    s223:hasSimpleValue "0.5" .
+
+ex:ReturnSystem a s223:System ;
+    rdfs:label "Return System" ;
+    s223:contains ex:00051,
+        ex:00056 ;
+    s223:hasDevice ex:00051,
+        ex:00056 .
+
+ex:SupplySystem a s223:System ;
+    rdfs:label "Supply System" ;
+    s223:contains ex:00007,
+        ex:00011,
+        ex:00016,
+        ex:00021,
+        ex:00025,
+        ex:00036,
+        ex:00047 ;
+    s223:hasDevice ex:00007,
+        ex:00011,
+        ex:00016,
+        ex:00021,
+        ex:00025,
+        ex:00036,
+        ex:00047 .
+
+ex:exatmp a s223:QuantifiableObservableProperty ;
+    rdfs:label "Exhaust Air Temperature" ;
+    s223:hasUnit <http://qudt.org/vocab/unit/DEG_F> ;
+    s223:hasValue ex:extvalue .
+
+ex:mxtmp a s223:QuantifiableObservableProperty ;
+    rdfs:label "Mixed Air Temperature" .
+
+ex:oatmp a s223:QuantifiableObservableProperty ;
+    rdfs:label "Outside Air Temperature" .
+
+ex:ratmp a s223:QuantifiableObservableProperty ;
+    rdfs:label "Return Air Temperature" .
+
+ex:satmp a s223:QuantifiableObservableProperty ;
+    rdfs:label "Supply Air Temperature" .
+
+ex:00006 a s223:Duct ;
+    rdfs:label "A-9.outside_air" ;
+    s223:cnx ex:00009,
+        ex:00018 ;
+    s223:hasProperty ex:oatmp .
+
+ex:00009 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.min_oa_damper.airInlet" ;
+    s223:cnx ex:00006,
+        ex:00007 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00010 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.min_oa_damper.airOutlet" ;
+    s223:cnx ex:00007,
+        ex:00015 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00013 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.outside_air_afms.airInlet" ;
+    s223:cnx ex:00011,
+        ex:00015 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00014 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.outside_air_afms.airOutlet" ;
+    s223:cnx ex:00011,
+        ex:00020 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00018 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.economizer_oa_damper.airInlet" ;
+    s223:cnx ex:00006,
+        ex:00016 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00019 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.economizer_oa_damper.airOutlet" ;
+    s223:cnx ex:00016,
+        ex:00020 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00024 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.mixed_air_filter.airOutlet" ;
+    s223:cnx ex:00021,
+        ex:00035 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00026 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.hot_water_coil.airInlet" ;
+    s223:cnx ex:00025,
+        ex:00035 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00027 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.hot_water_coil.airOutlet" ;
+    s223:cnx ex:00025,
+        ex:00046 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00028 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.hot_water_coil.hotWaterInlet" ;
+    s223:cnx ex:00025,
+        ex:00034 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:HotWater .
+
+ex:00033 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.hot_water_coil.hw_valve.hotWaterOutlet" ;
+    s223:cnx ex:00030,
+        ex:00034 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:HotWater .
+
+ex:00037 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.chilled_water_coil.airInlet" ;
+    s223:cnx ex:00036,
+        ex:00046 ;
+    s223:hasDirection s223:Inlet ;
+    s223:hasProperty ex:coil_inlet_temp ;
+    s223:substance s223:Air .
+
+ex:00038 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.chilled_water_coil.airOutlet" ;
+    s223:cnx ex:00036,
+        ex:00050 ;
+    s223:hasDirection s223:Outlet ;
+    s223:hasProperty ex:coil_outlet_temp ;
+    s223:substance s223:Air .
+
+ex:00046 a s223:Duct ;
+    s223:cnx ex:00027,
+        ex:00037 .
+
+ex:00048 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.supply_fan.airInlet" ;
+    s223:cnx ex:00047,
+        ex:00050 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00049 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.supply_fan.airOutlet" ;
+    s223:cnx ex:00047 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00050 a s223:Duct ;
+    s223:cnx ex:00038,
+        ex:00048 .
+
+ex:00052 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.return_fan.airInlet" ;
+    s223:cnx ex:00051,
+        ex:00054 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00053 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.return_fan.airOutlet" ;
+    s223:cnx ex:00051 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00058 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.exhaust_air_damper.airInlet" ;
+    s223:cnx ex:00055,
+        ex:00056 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00059 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.exhaust_air_damper.airOutlet" ;
+    s223:cnx ex:00056,
+        ex:00060 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00061 a s223:Damper,
+        s223:Device ;
+    rdfs:label "A-9.return_air_damper" ;
+    s223:airInlet ex:00063 ;
+    s223:airOutlet ex:00064 ;
+    s223:cnx ex:00063,
+        ex:00064 ;
+    s223:hasProperty ex:00062 ;
+    s223:position ex:00062 .
+
+ex:00063 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.return_air_damper.airInlet" ;
+    s223:cnx ex:00055,
+        ex:00061 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:Air .
+
+ex:00064 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.return_air_damper.airOutlet" ;
+    s223:cnx ex:00020,
+        ex:00061 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:Air .
+
+ex:00020 a s223:Duct ;
+    rdfs:label "A-9.mixed_air" ;
+    s223:cnx ex:00014,
+        ex:00019,
+        ex:00023,
+        ex:00064 .
+
+ex:00023 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.mixed_air_filter.airInlet" ;
+    s223:cnx ex:00020,
+        ex:00021 ;
+    s223:hasDirection s223:Inlet ;
+    s223:hasProperty ex:mxtmp ;
+    s223:substance s223:Air .
+
+ex:00030 a s223:Device,
+        s223:HotWaterValve ;
+    rdfs:label "A-9.hot_water_coil.hw_valve" ;
+    s223:cnx ex:00032,
+        ex:00033 ;
+    s223:hasProperty ex:00031 ;
+    s223:hotWaterInlet ex:00032 ;
+    s223:hotWaterOutlet ex:00033 ;
+    s223:isDeviceOf ex:00025 ;
+    s223:position ex:00031 .
+
+ex:00039 a s223:ConnectionPoint,
+        s223:InletConnectionPoint ;
+    rdfs:label "A-9.chilled_water_coil.chilledWaterSupply" ;
+    s223:cnx ex:00036,
+        ex:00045 ;
+    s223:hasDirection s223:Inlet ;
+    s223:substance s223:ChilledWater .
+
+ex:00041 a s223:ChilledWaterValve,
+        s223:Device,
+        s223:Valve ;
+    rdfs:label "A-9.chilled_water_coil.chilled_water_valve" ;
+    s223:chilledWaterInlet ex:00043 ;
+    s223:chilledWaterOutlet ex:00044 ;
+    s223:cnx ex:00043,
+        ex:00044 ;
+    s223:hasPosition ex:ChilledWaterValveValue ;
+    s223:hasProperty ex:00042 ;
+    s223:isDeviceOf ex:00036 ;
+    s223:position ex:00042 .
+
+ex:00044 a s223:ConnectionPoint,
+        s223:OutletConnectionPoint ;
+    rdfs:label "A-9.chilled_water_coil.chilled_water_valve.chilledWaterOutlet" ;
+    s223:cnx ex:00041,
+        ex:00045 ;
+    s223:hasDirection s223:Outlet ;
+    s223:substance s223:ChilledWater .
+
+ex:00047 a s223:Device,
+        s223:Fan ;
+    rdfs:label "A-9.supply_fan" ;
+    s223:airInlet ex:00048 ;
+    s223:airOutlet ex:00049 ;
+    s223:cnx ex:00048,
+        ex:00049 .
+
+ex:00051 a s223:Device,
+        s223:Fan ;
+    rdfs:label "A-9.return_fan" ;
+    s223:airInlet ex:00052 ;
+    s223:airOutlet ex:00053 ;
+    s223:cnx ex:00052,
+        ex:00053 .
+
+ex:00007 a s223:Damper,
+        s223:Device ;
+    rdfs:label "A-9.min_oa_damper" ;
+    s223:airInlet ex:00009 ;
+    s223:airOutlet ex:00010 ;
+    s223:cnx ex:00009,
+        ex:00010 ;
+    s223:hasProperty ex:00008 ;
+    s223:position ex:00008 .
+
+ex:00011 a s223:AirFlowStation,
+        s223:Device ;
+    rdfs:label "A-9.outside_air_afms" ;
+    s223:airInlet ex:00013 ;
+    s223:airOutlet ex:00014 ;
+    s223:cnx ex:00013,
+        ex:00014 ;
+    s223:flow ex:00012 ;
+    s223:hasProperty ex:00012 .
+
+ex:00016 a s223:Damper,
+        s223:Device ;
+    rdfs:label "A-9.economizer_oa_damper" ;
+    s223:airInlet ex:00018 ;
+    s223:airOutlet ex:00019 ;
+    s223:cnx ex:00018,
+        ex:00019 ;
+    s223:hasProperty ex:00017 ;
+    s223:position ex:00017 .
+
+ex:00021 a s223:Device,
+        s223:Filter ;
+    rdfs:label "A-9.mixed_air_filter" ;
+    s223:airInlet ex:00023 ;
+    s223:airOutlet ex:00024 ;
+    s223:cnx ex:00023,
+        ex:00024 ;
+    s223:dp ex:00022 ;
+    s223:hasProperty ex:00022 .
+
+ex:00056 a s223:Damper,
+        s223:Device ;
+    rdfs:label "A-9.exhaust_air_damper" ;
+    s223:airInlet ex:00058 ;
+    s223:airOutlet ex:00059 ;
+    s223:cnx ex:00058,
+        ex:00059 ;
+    s223:hasProperty ex:00057 ;
+    s223:position ex:00057 .
+
+ex:00025 a s223:Device,
+        s223:HotWaterCoil2 ;
+    rdfs:label "A-9.hot_water_coil" ;
+    s223:airInlet ex:00026 ;
+    s223:airOutlet ex:00027 ;
+    s223:cnx ex:00026,
+        ex:00027,
+        ex:00028,
+        ex:00029 ;
+    s223:hasDevice ex:00030 ;
+    s223:hotWaterInlet ex:00028 ;
+    s223:hotWaterOutlet ex:00029 .
+
+ex:00036 a s223:ChilledWaterCoil2,
+        s223:Coil,
+        s223:Device ;
+    rdfs:label "A-9.chilled_water_coil" ;
+    s223:airInlet ex:00037 ;
+    s223:airOutlet ex:00038 ;
+    s223:chilledWaterReturn ex:00040 ;
+    s223:chilledWaterSupply ex:00039 ;
+    s223:cnx ex:00037,
+        ex:00038,
+        ex:00039,
+        ex:00040 ;
+    s223:failed false ;
+    s223:hasDevice ex:00041 ;
+    s223:hasRole <http://data.ashrae.org/standard223/1.0/vocab/role#Cooling> .
+
