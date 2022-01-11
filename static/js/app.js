@@ -10,7 +10,7 @@ const app = Vue.createApp({
   data: function() {
     return {
       store: null,
-      inspect_url: {url: ''},
+      inspect_urls: [],
       message: '',
       progress: '',
       error: '',
@@ -20,19 +20,32 @@ const app = Vue.createApp({
   created: function() {
       this.initStore();
   },
+  computed: {
+        inspect_url: function() {
+            if (this.inspect_urls.length == 0 || this.inspect_urls[this.inspect_urls.length-1]?.length == 0) {
+                return '';
+            }
+            return this.inspect_urls[this.inspect_urls.length-1] ?? '';
+        },
+  },
   mounted: function() {
     const self = this;
     document.onclick = function (e) {
       const elem = e.target;
       if (elem.tagName == 'A' && elem.classList.contains("iri")) {
         elem.removeAttribute("target");
-        self.inspect_url.url = e.target.textContent;
+        self.inspect_urls.push(e.target.textContent);
+        console.log(self.inspect_urls);
+        //self.inspect_url.url = e.target.textContent;
         e.preventDefault();
         return false; // prevent default action and stop event propagation
       }
     };
   },
   methods: {
+    back: function() {
+        this.inspect_urls.pop();
+    },
     initStore: function() {
         var self = this;
         this.update_status({progress: "Loading store..."});
@@ -220,7 +233,7 @@ app.component("instance-info", {
     },
     computed: {
         details: function() {
-            if (this.url.length == 0) {
+            if (this.url == 0) {
                 return {}, {};
             }
             const query = `
@@ -264,6 +277,9 @@ app.component("instance-info", {
         <div>
         <h3>Instance Info</h3>
         <i>{{ url }}</i>
+        <p>
+        <button v-if="url.length > 0" @click="this.$root.back()">Back</button>
+        </p>
         <ul>
             <li v-for="(vals, prop) in details[0]"><b>{{ this.$root.getURIValue(prop) }}:</b>
                 <ul class="no-bullets">
