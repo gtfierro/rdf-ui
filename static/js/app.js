@@ -161,7 +161,7 @@ app.component("querybox", {
             history.replaceState(null, null, "?"+queryParams.toString());
         },
         reset: function() {
-            Vue.toRaw(this.yasqe).setValue("SELECT * WHERE { ?s ?p ?o } LIMIT 10");
+            Vue.toRaw(this.yasqe).setValue("SELECT * WHERE {\n ?s ?p ?o .\n} LIMIT 10");
             this.yasqe.addPrefixes({
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "sh": "http://www.w3.org/ns/shacl#",
