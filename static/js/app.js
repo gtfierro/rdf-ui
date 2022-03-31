@@ -206,6 +206,8 @@ app.component("querybox", {
             persistencyExpire: 0,
         });
         this.yasqe.on("query", (_, req) => {
+            req.abort()
+
             const q = req._data.query;
             const resp = {
                 "head": {"vars": []},
