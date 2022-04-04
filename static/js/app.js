@@ -58,6 +58,7 @@ const app = Vue.createApp({
                     console.log("adding uri: " + url);
                     self.$root.handleURL(url, false);
                 }
+                console.log(self.store);
             });
     },
     update_status: function(msg) {
