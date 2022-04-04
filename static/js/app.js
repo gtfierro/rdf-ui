@@ -205,36 +205,46 @@ app.component("querybox", {
             defaultPlugin: "table",
             persistencyExpire: 0,
         });
-        this.yasqe.on("query", (_, req) => {
-            const q = req._data.query;
+
+        this.yasqe.query = async yasqe => {
             const resp = {
-                "head": {"vars": []},
-                "results": {
-                    "bindings": [],
+                head: {
+                    vars: [],
+                },
+                results: {
+                    bindings: [],
                 },
             };
-            const keys = [];
-            for (const binding of this.$root.store.query(q)) {
-                if (keys.length == 0) {
-                    for (const key of binding.keys()) {
-                        resp.head.vars.push(key);
-                        keys.push(key);
-                    }
+
+            const result = this.$root.store.query(this.yasqe.getValue());
+
+            for (const binding of result) {
+                if (resp.head.vars.length === 0) {
+                    resp.head.vars = [...binding.keys()];
                 }
+
                 const b = {};
+
                 for (const key of resp.head.vars) {
-                    b[key] = {"value": binding.get(key).value,
-                                "type": typelookup[binding.get(key).termType]};
+                    const term = binding.get(key);
+
+                    b[key] = {
+                        value: term.value,
+                        type: typelookup[term.termType],
+                    };
                 }
+
                 resp.results.bindings.push(b);
             }
-            self.yasr.setResponse({
+
+            this.yasr.setResponse({
                 data: JSON.stringify(resp),
                 contentType: "application/sparql-results+json",
             });
-            console.log(self.yasr);
+
             this.updateQueryString();
-        });
+        }
+
     },
     template: `
         <div>
